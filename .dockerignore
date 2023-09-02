@@ -1,0 +1,8 @@
+.dockerignore
+.git
+.gitattributes
+.gitignore
+.vscode
+**/bin
+**/obj
+compose.yml

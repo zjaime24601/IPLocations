@@ -12,20 +12,16 @@ Build a micro-service that would use any 3rd party location-from-IP address serv
     - Integration tests primarily used for overarching behaviours.
     - Unit tests mostly used to quickly test behaviours around isolated utilities. All done using xUnit.
 
-Swagger UI is available at https://localhost:7232/swagger/index.html
-
-## Dependencies
-
-The included [Docker Compose file](./compose.yml) contains the necessary mongodb instance as configured in appsettings as well as a mongo express service to act as a UI for that instance. 
-
-To spin up only the necessary dependencies run the following in the solution directory:
+## To Run
+The simplest way to run is to execute the below:
 ```
-docker-compose up -d mongo
+docker-compose up -d ip-locations
 ```
+Swagger UI will be available at http://localhost:5100/swagger/index.html
 
-You can then run or test the service with the following respective commands in the solution directory:
+## Tests
+To run tests you must have a mongodb instance running. So you must run either the above snippet or:
 ```
-dotnet run --project .\src\IPLocations.Api\IPLocations.Api.csproj
-
-dotnet test
+docker-compose up -d mongodb
 ```
+Then you can run `dotnet test` from the solution directory.

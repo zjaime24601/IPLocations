@@ -1,4 +1,16 @@
 services:
+  ip-locations:
+    build:
+      context: .
+    ports:
+      - 5100:80
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Mongo__ConnectionString: "mongodb://crezcoAdmin:very_secure_password@mongodb:27017"
+      Mongo__DatabaseName: "TestTest_Docker"
+    depends_on:
+      - mongodb
+
   mongodb:
     image: mongo
     ports:
@@ -17,3 +29,5 @@ services:
       ME_CONFIG_BASICAUTH_PASSWORD: admin
       ME_CONFIG_MONGODB_ADMINUSERNAME: crezcoAdmin
       ME_CONFIG_MONGODB_ADMINPASSWORD: very_secure_password
+    depends_on:
+      - mongodb
