@@ -12,11 +12,17 @@ WebApplication CreateApplication()
     builder.Services.AddHealthChecks();
     builder.Services.AddControllers();
     builder.Services.AddLocations();
+    builder.Services.AddSwaggerGen();
     return builder.Build();
 }
 
 void ConfigureApplication(WebApplication app)
 {
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
     app.UseHealthChecks("/health/ready");
     app.UseHealthChecks("/health/live");
     app.MapControllers();
