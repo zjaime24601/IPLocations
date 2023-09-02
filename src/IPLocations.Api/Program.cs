@@ -1,9 +1,12 @@
+using IPLocations.Api.Locations;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // TODO Introduce startup error handling
 
 // Configure
 builder.Services.AddControllers();
+builder.Services.AddLocations();
 
 
 var app = builder.Build();

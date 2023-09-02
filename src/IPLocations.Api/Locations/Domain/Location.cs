@@ -1,6 +1,6 @@
-﻿namespace IPLocations.Api.Locations;
+﻿namespace IPLocations.Api.Locations.Domain;
 
-public class LocationResponse
+public class Location
 {
     public required string IpAddress { get; init; }
 
