@@ -6,10 +6,14 @@ namespace IPLocations.Api.Locations.External;
 public class FreeIpLocationsProvider : IExternalLocationsProvider
 {
     private readonly IFreeIpClient _freeIpClient;
+    private readonly ILogger<FreeIpLocationsProvider> _logger;
 
-    public FreeIpLocationsProvider(IFreeIpClient freeIpClient)
+    public FreeIpLocationsProvider(
+        IFreeIpClient freeIpClient,
+        ILogger<FreeIpLocationsProvider> logger)
     {
         _freeIpClient = freeIpClient;
+        _logger = logger;
     }
 
     public async Task<Result<Location>> GetIpLocation(string ipAddress)
@@ -29,9 +33,9 @@ public class FreeIpLocationsProvider : IExternalLocationsProvider
                 Longitude = ipLocation.Longitude
             });
         }
-        catch (FreeIpException)
+        catch (FreeIpException ex)
         {
-            // TODO log exception here
+            _logger.LogError(ex, "Failed to lookup location for '{IPAddress}' from FreeIP", ipAddress);
             return Result<Location>.Failed();
         }
     }

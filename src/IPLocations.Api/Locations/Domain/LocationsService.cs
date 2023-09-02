@@ -7,13 +7,16 @@ public class LocationsService : ILocationsService
 {
     private readonly ILocationsRepository _locationsRepository;
     private readonly IExternalLocationsProvider _externalLocationsProvider;
+    private readonly ILogger<LocationsService> _logger;
 
     public LocationsService(
         ILocationsRepository locationsRepository,
-        IExternalLocationsProvider externalLocationsProvider)
+        IExternalLocationsProvider externalLocationsProvider,
+        ILogger<LocationsService> logger)
     {
         _locationsRepository = locationsRepository;
         _externalLocationsProvider = externalLocationsProvider;
+        _logger = logger;
     }
 
     public async Task<Result<Location>> GetLocationByIpAsync(string ipAddress)
@@ -27,7 +30,10 @@ public class LocationsService : ILocationsService
 
         var persistedIpAddress = await _locationsRepository.GetLocationFromIp(ipAddress);
         if (persistedIpAddress != null)
+        {
+            _logger.LogInformation("Falling back to value from persisted store.");
             return Result<Location>.Succeeded(persistedIpAddress);
+        }
 
         return locationResult;
     }
