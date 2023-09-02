@@ -1,6 +1,6 @@
 ﻿using IPLocations.Api.Locations;
 
-namespace IPLocations.Api;
+namespace IPLocations.Api.Locations.Caching;
 
 public interface ILocationsCache
 {

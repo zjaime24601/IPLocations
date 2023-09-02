@@ -2,7 +2,7 @@
 using IPLocations.Api.Locations;
 using IPLocations.Api.Locations.Domain;
 
-namespace IPLocations.UnitTests;
+namespace IPLocations.UnitTests.Api;
 
 public class ApiMappingExtensionsTests
 {

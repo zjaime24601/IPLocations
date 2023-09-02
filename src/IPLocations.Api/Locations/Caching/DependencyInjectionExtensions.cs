@@ -1,4 +1,4 @@
-﻿namespace IPLocations.Api;
+﻿namespace IPLocations.Api.Locations.Caching;
 
 public static class DependencyInjectionExtensions
 {

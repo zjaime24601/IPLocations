@@ -1,4 +1,5 @@
-﻿using IPLocations.Api.Locations.Domain;
+﻿using IPLocations.Api.Locations.Caching;
+using IPLocations.Api.Locations.Domain;
 using IPLocations.Api.Locations.External;
 using IPLocations.Api.Locations.Storage;
 

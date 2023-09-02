@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using IPLocations.Api;
 
-namespace IPLocations.UnitTests;
+namespace IPLocations.UnitTests.Api;
 
 public class ValidationHelpersTests
 {

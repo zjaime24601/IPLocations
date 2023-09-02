@@ -1,8 +1,7 @@
-﻿using IPLocations.Api.Locations;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
-namespace IPLocations.Api;
+namespace IPLocations.Api.Locations.Caching;
 
 public class InMemoryLocationsCache : ILocationsCache
 {
@@ -19,19 +18,13 @@ public class InMemoryLocationsCache : ILocationsCache
 
     public async Task<LocationResponse> TryGetOrAddAsync(string key, Func<Task<LocationResponse>> create)
     {
+        if (!_cacheOptions.Enabled)
+            return await create();
+
         return await _memoryCache.GetOrCreateAsync(key, async ce =>
         {
-            ce.AbsoluteExpirationRelativeToNow = GetCacheExpiry(key);
+            ce.AbsoluteExpirationRelativeToNow = _cacheOptions.GetExpiryForKey(key);
             return await create();
         });
-    }
-
-    private TimeSpan GetCacheExpiry(string key)
-    {
-        var prefixOption = _cacheOptions.PrefixOptions.Where(o => key.StartsWith(o.Prefix))
-        .OrderByDescending(o => o.Prefix)
-        .FirstOrDefault();
-        var expirySeconds = prefixOption?.ExpirationsSeconds ?? _cacheOptions.DefaultExpirationSeconds;
-        return TimeSpan.FromSeconds(expirySeconds);
     }
 }

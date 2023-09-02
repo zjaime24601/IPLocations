@@ -1,23 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IPLocations.Api;
+namespace IPLocations.Api.Locations.Caching;
 
 public class CacheOptions
 {
-    private static readonly int s_expirationDefaultSeconds = (int)TimeSpan.FromDays(1).TotalSeconds;
-
     public bool Enabled { get; init; } = true;
 
-    public int DefaultExpirationSeconds { get; init; } = s_expirationDefaultSeconds;
+    [Required]
+    public long? DefaultExpirationSeconds { get; init; }
 
     public List<CachePrefixOptions> PrefixOptions { get; init; } = new();
 
     public class CachePrefixOptions
     {
-        [Required]
         public string Prefix { get; set; }
 
-        [Required]
-        public long ExpirationsSeconds { get; set; }
+        public long? ExpirationsSeconds { get; set; }
     }
 }
