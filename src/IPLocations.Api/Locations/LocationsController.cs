@@ -1,5 +1,4 @@
-﻿using System.Net;
-using IPLocations.Api.Locations.Domain;
+﻿using IPLocations.Api.Locations.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IPLocations.Api.Locations;

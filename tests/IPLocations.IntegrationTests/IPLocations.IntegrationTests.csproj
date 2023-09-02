@@ -26,4 +26,11 @@
     <ProjectReference Include="..\..\src\IPLocations.Api\IPLocations.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="appsettings.Test.json" />
+    <Content Include="appsettings.Test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

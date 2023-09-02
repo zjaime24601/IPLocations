@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{FF8109C6
 		Directory.Build.props = Directory.Build.props
 		.editorconfig = .editorconfig
 		global.json = global.json
+		compose.yml = compose.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{9275F4F2-1628-457B-8269-17B7C389DEC7}"

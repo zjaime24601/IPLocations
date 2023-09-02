@@ -1,7 +1,6 @@
-﻿using IPLocations.Api.Locations;
-using IPLocations.Api.Locations.Domain;
+﻿using IPLocations.Api.Locations.Domain;
 
-namespace IPLocations.Api;
+namespace IPLocations.Api.Locations;
 
 public static class ApiMappingExtensions
 {

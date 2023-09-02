@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using IPLocations.Api;
+using IPLocations.Api.Locations;
 using IPLocations.Api.Locations.Domain;
 
 namespace IPLocations.UnitTests;
