@@ -12,19 +12,27 @@ public class FreeIpLocationsProvider : IExternalLocationsProvider
         _freeIpClient = freeIpClient;
     }
 
-    public async Task<Location> GetIpLocation(string ipAddress)
+    public async Task<Result<Location>> GetIpLocation(string ipAddress)
     {
-        var ipLocation = await _freeIpClient.LookupIpLocation(ipAddress);
-        return new()
+        try
         {
-            IpAddress = ipAddress,
-            CountryCode = ipLocation.CountryCode,
-            CountryName = ipLocation.CountryName,
-            RegionName = ipLocation.RegionName,
-            CityName = ipLocation.CityName,
-            ZipCode = ipLocation.ZipCode,
-            Latitude = ipLocation.Latitude,
-            Longitude = ipLocation.Longitude
-        };
+            var ipLocation = await _freeIpClient.LookupIpLocation(ipAddress);
+            return Result<Location>.Succeeded(new()
+            {
+                IpAddress = ipAddress,
+                CountryCode = ipLocation.CountryCode,
+                CountryName = ipLocation.CountryName,
+                RegionName = ipLocation.RegionName,
+                CityName = ipLocation.CityName,
+                ZipCode = ipLocation.ZipCode,
+                Latitude = ipLocation.Latitude,
+                Longitude = ipLocation.Longitude
+            });
+        }
+        catch (FreeIpException)
+        {
+            // TODO log exception here
+            return Result<Location>.Failed();
+        }
     }
 }

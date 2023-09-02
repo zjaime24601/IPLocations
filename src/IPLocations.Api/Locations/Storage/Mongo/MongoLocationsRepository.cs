@@ -20,6 +20,9 @@ public class MongoLocationsRepository : ILocationsRepository
             .SortByDescending(l => l.Id)
             .FirstOrDefaultAsync();
 
+        if (storedLocation is null)
+            return null;
+
         return new()
         {
             IpAddress = storedLocation.IpAddress,

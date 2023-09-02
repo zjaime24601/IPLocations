@@ -14,6 +14,11 @@ public class FreeIpStubClient : IFreeIpClient
         return Task.FromResult(location);
     }
 
+    public void Reset()
+    {
+        _ipHandlers.Clear();
+    }
+
     public void RegisterSuccessIp(string ipAddress)
     {
         _ipHandlers[ipAddress] = () => BuildSuccessfulResponse(ipAddress);

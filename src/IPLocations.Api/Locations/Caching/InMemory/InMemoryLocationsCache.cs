@@ -23,8 +23,16 @@ public class InMemoryLocationsCache : ILocationsCache
 
         return await _memoryCache.GetOrCreateAsync(key, async ce =>
         {
+            var newEntry = await create();
+
+            if (newEntry is null)
+            {
+                ce.Dispose();
+                return null;
+            }
+
             ce.AbsoluteExpirationRelativeToNow = _cacheOptions.GetExpiryForKey(key);
-            return await create();
+            return newEntry;
         });
     }
 }

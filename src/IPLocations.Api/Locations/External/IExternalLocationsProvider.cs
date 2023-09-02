@@ -4,5 +4,5 @@ namespace IPLocations.Api.Locations.External;
 
 public interface IExternalLocationsProvider
 {
-    Task<Location> GetIpLocation(string ipAddress);
+    Task<Result<Location>> GetIpLocation(string ipAddress);
 }

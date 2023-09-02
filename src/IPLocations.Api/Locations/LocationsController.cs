@@ -21,8 +21,16 @@ public class LocationsController : ControllerBase
             return Problem("IP address is invalid", statusCode: StatusCodes.Status400BadRequest);
         }
 
-        var locationResponse = await locationsCache.TryGetOrAddAsync(CachePrefix + ipAddress, async ()
-            => (await locationsService.GetLocationByIpAsync(ipAddress)).ToApiResponse());
-        return Ok(locationResponse);
+        var locationResponse = await locationsCache.TryGetOrAddAsync(CachePrefix + ipAddress, async () =>
+        {
+            var result = await locationsService.GetLocationByIpAsync(ipAddress);
+            return result.Success
+                ? result.Value.ToApiResponse()
+                : null;
+        });
+
+        return locationResponse != null
+            ? Ok(locationResponse)
+            : Problem("IP lookup unavailable", statusCode: StatusCodes.Status503ServiceUnavailable);
     }
 }

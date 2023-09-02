@@ -2,5 +2,5 @@
 
 public interface ILocationsService
 {
-    Task<Location> GetLocationByIpAsync(string ipAddress);
+    Task<Result<Location>> GetLocationByIpAsync(string ipAddress);
 }

@@ -1,6 +1,4 @@
-﻿using FreeIpClient;
-using IPLocations.Api.Locations.Domain;
-using IPLocations.Api.Locations.External;
+﻿using IPLocations.Api.Locations.External;
 using IPLocations.Api.Locations.Storage;
 
 namespace IPLocations.Api.Locations.Domain;
@@ -18,11 +16,19 @@ public class LocationsService : ILocationsService
         _externalLocationsProvider = externalLocationsProvider;
     }
 
-    public async Task<Location> GetLocationByIpAsync(string ipAddress)
+    public async Task<Result<Location>> GetLocationByIpAsync(string ipAddress)
     {
-        // TODO Add error handling to fallback to persisted value
-        var location = await _externalLocationsProvider.GetIpLocation(ipAddress);
-        await _locationsRepository.StoreIpLocation(location);
-        return location;
+        var locationResult = await _externalLocationsProvider.GetIpLocation(ipAddress);
+        if (locationResult.Success)
+        {
+            await _locationsRepository.StoreIpLocation(locationResult.Value);
+            return locationResult;
+        }
+
+        var persistedIpAddress = await _locationsRepository.GetLocationFromIp(ipAddress);
+        if (persistedIpAddress != null)
+            return Result<Location>.Succeeded(persistedIpAddress);
+
+        return locationResult;
     }
 }
