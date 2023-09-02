@@ -15,7 +15,6 @@ public class HttpFreeIpClient : IFreeIpClient
     {
         try
         {
-            // TODO implement retry policy
             var response = await _client.GetAsync($"api/json/{ipAddress}");
 
             response.EnsureSuccessStatusCode();

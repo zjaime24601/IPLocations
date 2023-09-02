@@ -1,20 +1,25 @@
 using IPLocations.Api.Locations;
 
-var builder = WebApplication.CreateBuilder(args);
+{
+    var app = CreateApplication();
+    ConfigureApplication(app);
+    app.Run();
+}
 
-// TODO Introduce startup error handling
+WebApplication CreateApplication()
+{
+    var builder = WebApplication.CreateBuilder(args);
+    builder.Services.AddHealthChecks();
+    builder.Services.AddControllers();
+    builder.Services.AddLocations();
+    return builder.Build();
+}
 
-// Configure
-builder.Services.AddControllers();
-builder.Services.AddLocations();
-
-
-var app = builder.Build();
-
-// Middleware
-app.MapControllers();
-
-
-app.Run();
+void ConfigureApplication(WebApplication app)
+{
+    app.UseHealthChecks("/health/ready");
+    app.UseHealthChecks("/health/live");
+    app.MapControllers();
+}
 
 public partial class Program { }
