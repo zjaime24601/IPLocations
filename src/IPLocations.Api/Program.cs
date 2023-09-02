@@ -23,6 +23,8 @@ void ConfigureApplication(WebApplication app)
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+
+    app.UseHttpsRedirection();
     app.UseHealthChecks("/health/ready");
     app.UseHealthChecks("/health/live");
     app.MapControllers();
