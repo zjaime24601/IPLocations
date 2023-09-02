@@ -1,4 +1,5 @@
-﻿using IPLocations.Api.Storage.Mongo;
+﻿using FreeIpClient;
+using IPLocations.Api.Storage.Mongo;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Caching.Memory;
@@ -35,6 +36,10 @@ public class IPLocationsFixture : WebApplicationFactory<Program>
         {
             config.SetBasePath(Directory.GetCurrentDirectory());
             config.AddJsonFile("appsettings.Test.json");
+        });
+        builder.ConfigureServices(services =>
+        {
+            services.AddSingleton<IFreeIpClient, FreeIpStubClient>();
         });
     }
 }

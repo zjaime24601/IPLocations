@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using IPLocations.Api.Storage.Mongo;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
 namespace IPLocations.IntegrationTests;
@@ -42,12 +41,12 @@ public class GetIPLocationTests : IAsyncLifetime
         {
             IpAddress = testIpAddress,
             CountryCode = "GB",
-            CountryName = "United Kingom",
+            CountryName = "United Kingdom of Great Britain and Northern Ireland",
             RegionName = "England",
             CityName = "Nottingham",
-            ZipCode = "NG7",
+            ZipCode = "NG1",
             Latitude = 3.456,
-            Longitude = 6.543
+            Longitude = -6.543
         });
 
         var storedLocations = await _storageCollection.Find(
