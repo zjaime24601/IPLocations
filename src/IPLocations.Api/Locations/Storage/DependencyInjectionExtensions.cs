@@ -7,7 +7,7 @@ namespace IPLocations.Api.Locations.Storage;
 
 public static class DependencyInjectionExtensions
 {
-    public static IServiceCollection AddLocationsStorage(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddLocationsStorage(this IServiceCollection services)
     {
         services.AddOptions<MongoOptions>()
             .BindConfiguration("Mongo")

@@ -5,10 +5,11 @@ namespace IPLocations.Api.Locations;
 
 public static class DependencyInjectionExtensions
 {
-    public static IServiceCollection AddLocations(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddLocations(this IServiceCollection services)
     {
         return services
-            .AddLocationsStorage(configuration)
+            .AddLocationsStorage()
+            .AddLocationsCache()
             .AddScoped<ILocationsService, LocationsService>();
     }
 }

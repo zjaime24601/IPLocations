@@ -13,19 +13,21 @@ public class GetIPLocationTests : IAsyncLifetime
 {
     private readonly IPLocationsFixture _fixture;
     private readonly HttpClient _client;
-    private readonly IMongoCollection<LocationDocument> _storageCollection;
+    private IMongoCollection<LocationDocument> _storageCollection;
 
     public GetIPLocationTests(IPLocationsFixture fixture)
     {
         _fixture = fixture;
         _client = fixture.CreateClient();
-        _storageCollection = fixture.GetLocationsStorage();
+        _storageCollection = _fixture.GetLocationsStorage();
     }
 
     public async Task InitializeAsync()
     {
         await _fixture.ClearLocationsStorage();
+        _fixture.ClearCache();
     }
+
     public Task DisposeAsync() => Task.CompletedTask;
 
     [Fact]
@@ -53,6 +55,21 @@ public class GetIPLocationTests : IAsyncLifetime
         .ToListAsync();
         storedLocations.Should().HaveCount(1);
         storedLocations.First().Should().BeEquivalentTo(locationResponse);
+    }
+
+    [Fact]
+    public async Task GivenPreviouslyRequestedIPAddress_WhenGettingIPLocation_ThenOnly1IPAddressIsPersisted()
+    {
+        const string testIpAddress = "127.0.0.1";
+        var response = await _client.GetAsync($"/locations/{testIpAddress}");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var response2 = await _client.GetAsync($"/locations/{testIpAddress}");
+        response2.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var storedLocations = await _storageCollection.Find(
+            Builders<LocationDocument>.Filter.Eq(l => l.IpAddress, testIpAddress))
+        .ToListAsync();
+        storedLocations.Should().HaveCount(1);
     }
 
     [Fact]

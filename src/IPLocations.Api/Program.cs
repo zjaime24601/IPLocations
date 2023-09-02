@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configure
 builder.Services.AddControllers();
-builder.Services.AddLocations(builder.Configuration);
+builder.Services.AddLocations();
 
 
 var app = builder.Build();

@@ -7,9 +7,12 @@ namespace IPLocations.Api.Locations;
 [Route("locations")]
 public class LocationsController : ControllerBase
 {
+    private const string CachePrefix = "locations/v1/";
+
     [HttpGet("{ipAddress}")]
     public async Task<IActionResult> GetLocation(
         [FromRoute] string ipAddress,
+        [FromServices] ILocationsCache locationsCache,
         [FromServices] ILocationsService locationsService)
     {
         if (!ValidationHelpers.IsValidIPAddress(ipAddress))
@@ -17,7 +20,8 @@ public class LocationsController : ControllerBase
             return Problem("IP address is invalid", statusCode: StatusCodes.Status400BadRequest);
         }
 
-        var location = await locationsService.GetLocationByIpAsync(ipAddress);
-        return Ok(location.ToApiResponse());
+        var locationResponse = await locationsCache.TryGetOrAddAsync(CachePrefix + ipAddress, async ()
+            => (await locationsService.GetLocationByIpAsync(ipAddress)).ToApiResponse());
+        return Ok(locationResponse);
     }
 }
